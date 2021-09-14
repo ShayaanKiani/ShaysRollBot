@@ -18,7 +18,6 @@ def four_d6_d1():
         count += 1
     array.pop(index)
 
-    print(sum(array))
     return sum(array)
 
 
