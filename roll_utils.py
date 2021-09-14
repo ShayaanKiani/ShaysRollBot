@@ -17,7 +17,7 @@ def four_d6_d1():
             index = count
         count += 1
     array.pop(index)
-    
+
     print(sum(array))
     return sum(array)
 
@@ -31,4 +31,3 @@ def roll_stats():
         str(four_d6_d1()),
         str(four_d6_d1()),
     )
-
