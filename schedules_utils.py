@@ -30,7 +30,7 @@ def calculate_percent_to_next_session(last_session, next_session):
 def sixty_seconds_left(next_session):
     duration = next_session - datetime.now()
     total_seconds = duration.total_seconds()
-    
+
     if total_seconds <= 60:
         return True
     else:
