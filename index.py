@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
+from asyncio import sleep
 
 from secrets import bot_token
 from roll_utils import roll_stats
@@ -43,20 +44,34 @@ async def ns(ctx, arg, arg2=None):
                 last_session = next_session
 
         next_session = ns_datetime
-
-        await ctx.send(
-            "Last Session: {} UTC, Next Session: {} UTC\n{}\n--<>--Loading Next Session:--<>--\n{}".format(
-                str(last_session),
+        percentage = calculate_percent_to_next_session(last_session, next_session)
+        message = await ctx.send(
+            "Next Session: \n```\n{} BTC\n```{}--<>--Loading Next Session:--<>--\n{}".format(
                 str(next_session),
                 calculate_time_difference(next_session),
-                create_bar(
-                    calculate_percent_to_next_session(last_session, next_session)
-                ),
+                create_bar(percentage)
             )
         )
+
+        while sixty_seconds_left(next_session)!=True:
+            await sleep(60)
+            percentage = calculate_percent_to_next_session(last_session, next_session)
+            contents = "Next Session: \n```\n{} BTC\n```{}--<>--Loading Next Session:--<>--\n{}".format(
+                    str(next_session),
+                    calculate_time_difference(next_session),
+                    create_bar(percentage)
+                )
+            await message.edit(content = contents)
+
+        contents = "Next Session: \n```\n{} BTC\n```{}--<>--Loading Next Session:--<>--\n{}".format(
+                    str(next_session),
+                    "Time Till Next Game: ```\n0 Days, 0 Hours, 0 Minutes\n```",
+                    create_bar(100)
+                )
+        await message.edit(content = contents)
     except:
         await ctx.send(
-            "Wrong time format please enter a format matching day-month-year-hour:minutes for example '01-01-2021-00:00'"
+        "Wrong time format please enter a format matching day-month-year-hour:minutes for example '01-01-2021-00:00'"
         )
 
 
