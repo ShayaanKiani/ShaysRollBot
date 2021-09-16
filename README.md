@@ -13,3 +13,5 @@ Before commiting run 'python -m black .', this will format your code.
 Bot Commands
 -------------
 !rollcharacter - Rolls a character using 4d6d1.
+!ls - Manually set last session time in format '01-01-2021-00:00'
+!ns - Manually set last session time in format '01-01-2021-00:00', you can add an additional parameter auto-ls after the time to set the last session time to the previos sessions time.
