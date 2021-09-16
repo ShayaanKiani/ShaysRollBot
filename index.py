@@ -25,11 +25,6 @@ async def rollcharacter(ctx):
 
 
 @client.command()
-async def createbar(ctx, arg):
-    await ctx.send("--<>--Loading Next Session:--<>--\n{}".format(create_bar(int(arg))))
-
-
-@client.command()
 async def ns(ctx, arg, arg2=None):
     global last_session
     global next_session
@@ -44,22 +39,24 @@ async def ns(ctx, arg, arg2=None):
                 last_session = next_session
 
         next_session = ns_datetime
-        percentage = calculate_percent_to_next_session(last_session, next_session)
         message = await ctx.send(
             "Next Session: \n```\n{} BTC\n```{}--<>--Loading Next Session:--<>--\n{}".format(
                 str(next_session),
                 calculate_time_difference(next_session),
-                create_bar(percentage),
+                create_bar(
+                    calculate_percent_to_next_session(last_session, next_session)
+                ),
             )
         )
 
         while sixty_seconds_left(next_session) != True:
             await sleep(60)
-            percentage = calculate_percent_to_next_session(last_session, next_session)
             contents = "Next Session: \n```\n{} BTC\n```{}--<>--Loading Next Session:--<>--\n{}".format(
                 str(next_session),
                 calculate_time_difference(next_session),
-                create_bar(percentage),
+                create_bar(
+                    calculate_percent_to_next_session(last_session, next_session)
+                ),
             )
             await message.edit(content=contents)
 
@@ -76,7 +73,7 @@ async def ns(ctx, arg, arg2=None):
 
 
 @client.command()
-async def setls(ctx, arg):
+async def ls(ctx, arg):
     global last_session
     try:
         last_session = datetime.strptime(str(arg), "%d-%m-%Y-%H:%M")
